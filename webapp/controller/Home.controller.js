@@ -77,6 +77,7 @@ sap.ui.define([
 		onInventoryPress: function (e) {
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.navTo("InventoryPlntStrloc", {});
+			console.log("Hi");
 		}
 
 	});

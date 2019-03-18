@@ -18,23 +18,19 @@
 						<!--	press="onReturn" icon="sap-icon://bar-code"/>-->
 						<Button text="Raw Material Receipt" class="sapMBtnContent" iconDensityAware="false" visible="true" enabled="true" width="325px"
 							iconFirst="true" type="Emphasized" press="onRMPutAway" icon="sap-icon://bar-code"/>
-						<Button text="Bin To Bin Transfer" class="sapMBtnContent" iconDensityAware="false" visible="true" enabled="true" width="325px"
-							iconFirst="true" type="Emphasized" press="onPressBinToBin" icon="sap-icon://bar-code"/>
+						<!--<Button text="Bin To Bin Transfer" class="sapMBtnContent" iconDensityAware="false" visible="true" enabled="true" width="325px"-->
+						<!--	iconFirst="true" type="Emphasized" press="onPressBinToBin" icon="sap-icon://bar-code"/>-->
 						<Button text="IM Stock Overview" iconDensityAware="false" visible="true" enabled="true" width="325px" iconFirst="true" type="Emphasized"
 							press="onPressPlantScreen" icon="sap-icon://factory"/>
-						<Button text="WM Bin Stock" class="sapMBtnContent" iconDensityAware="false" visible="true" enabled="true" width="325px" iconFirst="true"
-							type="Emphasized" press="onPressWarehouseScreen" icon="sap-icon://bar-code"/>
+						<!--<Button text="WM Bin Stock" class="sapMBtnContent" iconDensityAware="false" visible="true" enabled="true" width="325px" iconFirst="true"-->
+						<!--	type="Emphasized" press="onPressWarehouseScreen" icon="sap-icon://bar-code"/>-->
 						<Button text="Outbound Shipping" class="sapMBtnContent" iconDensityAware="false" visible="true" enabled="true" width="325px"
 							iconFirst="true" type="Emphasized" press="onPressFGPick" icon="sap-icon://bar-code"/>
 						<Button text="Inventory Recon App" class="sapMBtnContent" iconDensityAware="false" visible="true" enabled="true" width="325px"
 							iconFirst="true" type="Emphasized" press="onInventoryPress" icon="sap-icon://bar-code"/>
-						<Button text="Finished Goods Put Away" class="sapMBtnContent" iconDensityAware="false" visible="true" enabled="true" width="325px"
-							iconFirst="true" type="Emphasized" press="onPressFG" icon="sap-icon://bar-code"/>
+						<!--<Button text="Finished Goods Put Away" class="sapMBtnContent" iconDensityAware="false" visible="true" enabled="true" width="325px"-->
+						<!--	iconFirst="true" type="Emphasized" press="onPressFG" icon="sap-icon://bar-code"/>-->
 					</VBox>
-					<!--<VBox height="5%" alignItems="Center"/>-->
-					<!--<VBox alignItems="Center">-->
-					<!--	<Image src="images/warehouse.png"></Image>-->
-					<!--</VBox>-->
 				</content>
 			</Page>
 		</pages>

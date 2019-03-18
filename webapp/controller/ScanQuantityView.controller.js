@@ -395,13 +395,7 @@ sap.ui.define([
 				});
 
 				function cSuccess(data) {
-					if (obatcNo !== data.results[0].BatchNo) {
-						MessageBox.information("Please Scan HU of Same Batch Number");
-						// oRef.getView().byId("id8").setValue("");
-						oRef.getView().byId("id1").setValue("");
-						batchFlag = true;
-						return batchFlag;
-					} else {
+					if (obatcNo === data.results[0].BatchNo || obatcNo === data.results[0].BatchNo1) {
 						oRef.aData.push({
 							ExternalHU: data.results[0].ExternalHU,
 							BatchNo: data.results[0].BatchNo,
@@ -415,6 +409,12 @@ sap.ui.define([
 						});
 						oRef.getOwnerComponent().setModel(oModel, "oListHU");
 						oRef.onItemPress();
+					} else {
+							MessageBox.information("Please Scan HU of Same Batch Number");
+						// oRef.getView().byId("id8").setValue("");
+						oRef.getView().byId("id1").setValue("");
+						batchFlag = true;
+						return batchFlag;
 
 					}
 				}
@@ -835,7 +835,7 @@ sap.ui.define([
 
 							var aData = oRef.getView().getModel("oDeliveryNo").getData();
 							aData.results[sap.ui.selectedIndex].ScannedQuantity = sap.ui.getCore().alreadyScannedPallet;
-							aData.results[sap.ui.palIndex].ScannedQuantity = sap.ui.getCore().scannedPallet;
+							aData.results[sap.ui.palIndex].ScannedQuantity = aData.results[sap.ui.selectedIndex].ScannedQuantity;
 							oRef.getView().getModel("oDeliveryNo").refresh(true);
 
 							var bData = oRef.getView().getModel("oScannedQtySelect").getData();
@@ -878,6 +878,22 @@ sap.ui.define([
 
 			} else {
 				// oRef._onObjectMatched();
+				var aData = oRef.getView().getModel("oListHU").getData();
+				oRef.aData = [];
+				oRef.getView().getModel("oListHU").setData(oRef.aData);
+				oRef.getView().getModel("oListHU").refresh(true);
+				oRef.getView().byId("idList").destroyItems();
+				oRef.getView().byId("id1").setValue("");
+				oRef.getView().byId("id4").setValue(sap.ui.getCore().alreadyScannedPallet);
+
+				var aData = oRef.getView().getModel("oDeliveryNo").getData();
+				aData.results[sap.ui.selectedIndex].ScannedQuantity = sap.ui.getCore().alreadyScannedPallet;
+				aData.results[sap.ui.palIndex].ScannedQuantity = aData.results[sap.ui.selectedIndex].ScannedQuantity;
+				oRef.getView().getModel("oDeliveryNo").refresh(true);
+
+				var bData = oRef.getView().getModel("oScannedQtySelect").getData();
+				bData.myScannedQty = "0.000";
+				oRef.getView().getModel("oScannedQtySelect").refresh(true);
 				var sHistory = History.getInstance();
 				var sPreviousHash = sHistory.getPreviousHash();
 				if (sPreviousHash !== undefined) {
@@ -932,7 +948,7 @@ sap.ui.define([
 			}
 
 			// var oSelected = oRadioBtn.getSelected();
-
+			this.removeDataFromTable();
 			var data = {};
 			data.NavDeliveryHeaderPickDataStorage = [];
 
@@ -1042,9 +1058,21 @@ sap.ui.define([
 
 				var error = JSON.parse(odata.response.body);
 				var error1 = error;
-				var error2 = error1.error.innererror.errordetails[0].message;
+				// var error2 = error1.error.innererror.errordetails[0].message;
+				var error2 = error1.error.innererror.errordetails;
+				var singleBatchMsg = "";
+				$.each(error2, function (index, item) {
 
-				if (error2 === "Please Select Single Batch") {
+					if (index != error2.length - 1) {
+						error2 = item.message;
+						if (error2 === "Please Select Single Batch") {
+							singleBatchMsg = "Please Select Single Batch";
+						}
+					}
+
+				});
+
+				if (singleBatchMsg === "Please Select Single Batch") {
 					oRef.changeBatch();
 					testFlag = false;
 					return testFlag;
@@ -1072,7 +1100,7 @@ sap.ui.define([
 
 									var aData = oRef.getView().getModel("oDeliveryNo").getData();
 									aData.results[sap.ui.selectedIndex].ScannedQuantity = sap.ui.getCore().alreadyScannedPallet;
-									aData.results[sap.ui.palIndex].ScannedQuantity = sap.ui.getCore().scannedPallet;
+									aData.results[sap.ui.palIndex].ScannedQuantity = aData.results[sap.ui.selectedIndex].ScannedQuantity;
 									oRef.getView().getModel("oDeliveryNo").refresh(true);
 
 									var bData = oRef.getView().getModel("oScannedQtySelect").getData();
@@ -1112,6 +1140,7 @@ sap.ui.define([
 			// this.getView().byId("id8").setValue(sap.ui.getCore().assignBatchNum);
 			var dummyFlag = true;
 			var that = this;
+			that.removeDataFromTable();
 
 			MessageBox.information("All HU's are of same batch", {
 				title: "Information",
@@ -1175,9 +1204,9 @@ sap.ui.define([
 							sap.ui.getCore().doorFlag.setEnabled(true);
 						}, function (odata, response) {
 
-							var error = JSON.parse(odata.response.body);
-							var error1 = error;
-							var error2 = error1.error.innererror.errordetails[0].message;
+							// var error = JSON.parse(odata.response.body);
+							// var error1 = error;
+							// var error2 = error1.error.innererror.errordetails[0].message;
 
 							// if (error2 === "Please Select Single Batch") {
 							// 	oRef.changeBatch();
@@ -1190,7 +1219,7 @@ sap.ui.define([
 									Action: "CLOSE",
 									onClose: function (oAction) {
 										if (oAction === sap.m.MessageBox.Action.CLOSE) {
-											oRef.removeDataFromTable();
+											that.removeDataFromTable();
 											sap.ui.getCore().batchScanRadioBtn.setSelected(false);
 											sap.ui.getCore().dontScanBatchRadioBtn.setSelected(true);
 											sap.ui.getCore().clearBatchNumber.setValue("");
@@ -1206,7 +1235,7 @@ sap.ui.define([
 
 											var aData = that.getView().getModel("oDeliveryNo").getData();
 											aData.results[sap.ui.selectedIndex].ScannedQuantity = sap.ui.getCore().alreadyScannedPallet;
-											aData.results[sap.ui.palIndex].ScannedQuantity = sap.ui.getCore().scannedPallet;
+											aData.results[sap.ui.palIndex].ScannedQuantity = aData.results[sap.ui.selectedIndex].ScannedQuantity;
 											that.getView().getModel("oDeliveryNo").refresh(true);
 
 											var bData = that.getView().getModel("oScannedQtySelect").getData();

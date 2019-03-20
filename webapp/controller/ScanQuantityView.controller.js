@@ -397,7 +397,7 @@ sap.ui.define([
 				function cSuccess(data) {
 					if (obatcNo === data.results[0].BatchNo || obatcNo === data.results[0].BatchNo1) {
 						oRef.aData.push({
-							ExternalHU: data.results[0].ExternalHU,
+							ExternalHU: data.results[0].HU,
 							BatchNo: data.results[0].BatchNo,
 							ScannedQnty: data.results[0].ScannedQnty
 						});
@@ -410,7 +410,7 @@ sap.ui.define([
 						oRef.getOwnerComponent().setModel(oModel, "oListHU");
 						oRef.onItemPress();
 					} else {
-							MessageBox.information("Please Scan HU of Same Batch Number");
+						MessageBox.information("Please Scan HU of Same Batch Number");
 						// oRef.getView().byId("id8").setValue("");
 						oRef.getView().byId("id1").setValue("");
 						batchFlag = true;
@@ -433,7 +433,7 @@ sap.ui.define([
 				function cSuccess(data) {
 
 					oRef.aData.push({
-						ExternalHU: data.results[0].ExternalHU,
+						ExternalHU: data.results[0].HU,
 						BatchNo: data.results[0].BatchNo,
 						ScannedQnty: data.results[0].ScannedQnty
 					});
@@ -492,7 +492,7 @@ sap.ui.define([
 				var scanQty = oRef.getView().byId("id4").getValue();
 				var tempScanQty = data.results[0].ScannedQnty;
 				var tempBatch = data.results[0].BatchNo;
-				var tempHU = data.results[0].ExternalHU;
+				var tempHU = data.results[0].HU;
 				// var batchQty = new sap.ui.model.json.JSONModel();
 				// var dummyData = oRef.getView().getModel("batchQty").getData();
 				// var bq = {};
